@@ -6,7 +6,7 @@ const Menu = props => {
         <div className="container">
             <nav className="navbar navbar-expand-lg bg-light">
                 <div className="container-fluid">
-                    <a className="navbar-brand">MealPlanner</a>
+                    <a className="navbar-brand">FoodPlanner</a>
                         <div className="collapse navbar-collapse" id="navbarNav">
                             <ul className="navbar-nav">
                                 <li className="nav-item">
