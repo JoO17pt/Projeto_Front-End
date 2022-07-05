@@ -1,7 +1,7 @@
 import React from "react";
 
-export const data = [];
+export const dataSearch = [];
 
-const DataContext = React.createContext(data);
+const DataContextSearch = React.createContext(dataSearch);
 
-export default DataContext;
+export default DataContextSearch;

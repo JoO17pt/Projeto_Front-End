@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef, useContext} from "react";
-import DataContext from "../data/dataContext-search";
+import DataContextSearch from "../data/dataContext-search";
+import DataContextPlan from "../data/dataContext-plan";
 
 const Search = props => {
 
@@ -14,30 +15,33 @@ const Search = props => {
     const [numberResults, setnumberResults] = useState();
     const [offsetResults, setoffsetResults] = useState();
     const offset = useRef(0);
+    const recipID = useRef();
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
-    const {recips, setRecips} = useContext(DataContext);
+    const {recips, setRecips} = useContext(DataContextSearch);
+    const [plan, setPlan] = useContext(DataContextPlan);
+    const [modal, setModal] = useState();
+
+    const [planLocal, setPlanLocal] = useState();
+
+    // let planLocal = {};
 
     const handleChange_cuisine = (e) => {
         setCuisine(e.target.value);
-        console.log(e.target.value);
     }
     
     const handleChange_type = (e) => {
         setMealType(e.target.value);
-        console.log(e.target.value);
     }
     
     const handleChange_sort = (e) => {
         setSort(e.target.value);
-        console.log(e.target.value);
     }
     
     const handleSearch = (e) => {
         setClick(click+1);
         offset.current = 0;
         acederAPI();
-        console.log('Fui clicado');
     }
 
     const handleMoreResults = (e) => {
@@ -46,17 +50,46 @@ const Search = props => {
         setClick(click+1);
     }
     
+    const handleAdd = (e) => {
+        
+        console.log(e.target.parentElement.firstChild.innerText); // Apanha a meal
+        console.log(e.target.parentElement.parentElement.parentElement.firstChild.innerText); // Apanha o dia
+        console.log(recipID.current);
+
+        let day = e.target.parentElement.parentElement.parentElement.firstChild.innerText;
+        let meal = e.target.parentElement.firstChild.innerText;
+        // for( let i = 0 ; i < plan.length ; i++) {
+        //     if ( plan[i].Day === day ) {
+        //         for ( let t=0 ; t < plan[i].Meals ; t++) {
+        //             if ( plan[i].Meals[t].Meal === meal) setPlan(plan[i].Meals[t].Recip=recipID.current)
+        //         }
+        //     }
+        // };
+        // planLocal[0].Meals[0].Recip = recipID.current;
+        // console.log(planLocal[0].Meals[0].Recip);
+        planLocal[0].Meals[0].Recip = recipID.current;
+        setPlan(planLocal);
+        console.log(planLocal);
+    }
+
+    const handleModal = (e) => {
+        // renderizarModal(plan);
+        console.log(plan);
+        console.log(e.target.parentElement.parentElement.id) // id da receita que é clicada no modal
+        recipID.current = e.target.parentElement.parentElement.id;
+    }
+
    
     useEffect (()=>{
         recips.results == undefined ? console.log('Data Context Vazio') : renderizarPagina(recips);
+        // planLocal = plan;
+        setPlanLocal(plan);
+        console.log(planLocal);
     },[]);
-
-    
 
 // ============================================================================================================================================
 
     const acederAPI = () => {
-        console.log("Entrei!")
         fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=76b1835049c04ff1ab1c10a5507294b8&cuisine=${cuisine}&type=${mealType}&sort=${sort}&number=10&offset=${offset.current}&addRecipeInformation=true`)
             .then(res => res.json())
             .then(
@@ -78,35 +111,79 @@ const Search = props => {
     };
 
     const renderizarPagina = (recips) => {
-        console.log('Função carregamento chamada!')
-        
-            console.log('Atualizei a DOM')
-            recips.number < recips.totalResults - recips.offset ? setnumberResults(recips.number) :  setnumberResults(recips.totalResults - recips.offset);
-            settotalResults(recips.totalResults);
-            setoffsetResults(recips.offset);
-            setSearchResults(
-                recips.results.map(recip=>{
-                    return(
-                        
-                        <div className="card mb-3">
-                                <div className="row g-0">
-                                    <div className="col-md-4">
-                                        <img src={recip.image} className="img-fluid rounded-start" alt="..."/>
-                                    </div>
-                                    <div className="col-md-8">
-                                        <div className="card-body">
-                                            <h5 className="card-title">{recip.title}</h5>
-                                            <p className="card-text">{recip.summary}</p>
-                                        </div>
+
+        recips.number < recips.totalResults - recips.offset ? setnumberResults(recips.number) :  setnumberResults(recips.totalResults - recips.offset);
+        settotalResults(recips.totalResults);
+        setoffsetResults(recips.offset);
+        setSearchResults(
+            recips.results.map(recip=>{
+                return(
+                    
+                    <div className="card mb-3" id={recip.id}>
+                            <div className="row g-0">
+                                <div className="col-md-4">
+                                    <img src={recip.image} className="img-fluid rounded-start" alt="..."/>
+                                </div>
+                                <div className="col-md-8">
+                                    <div className="card-body">
+                                        <h5 className="card-title">{recip.title}</h5>
+                                        <p className="card-text">{recip.summary}</p>
                                     </div>
                                 </div>
-                            </div>    
-                    )
-                }) 
-            )
-            
-        
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={handleModal}>
+                                    Add to my Meal Plan!
+                                </button>
+                            </div>
+                        </div>    
+                )
+            }) 
+        )
     }
+
+    // const renderizarModal = (plan) => {
+    //     console.log(plan);
+    //     setModal(
+    //         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    //             <div class="modal-dialog modal-dialog-centered">
+    //                 <div class="modal-content">
+    //                     <div class="modal-header">
+    //                         <h5 class="modal-title" id="exampleModalLabel">Meal Plan</h5>
+    //                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    //                      </div>
+    //                 <div class="modal-body">
+                        
+    //                 <div className="container">
+    //                     <div className="col">
+    //                         {plan.map(day => {
+    //                             return(
+    //                                 <div className="row">
+    //                                     <div className="col">{day.Day}</div>
+    //                                     <div className="col" id={day.Day}>{day.Meals.map(meal => {
+    //                                         return(
+    //                                             <>
+    //                                                 <div className="row">
+    //                                                     <div className="col">{meal.Meal}</div>
+    //                                                     <div className="col" onClick={handleAdd} id={meal.Meal}>Add</div>
+    //                                                 </div>
+    //                                             </>
+    //                                         )
+    //                                     })}</div>
+    //                                 </div>
+    //                                 )
+    //                         })}
+    //                     </div>
+    //                 </div>
+                    
+    //                 </div>
+    //                 <div class="modal-footer">
+    //                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    //                     <button type="button" class="btn btn-primary">Save changes</button>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     </div>
+    //     )
+    // }
 
 // =============================================================================================================================================
     return(
@@ -190,8 +267,56 @@ const Search = props => {
             <div>
                 {searchResults}
             </div>
-            
+
+            <div>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Meal Plan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                         </div>
+                    <div class="modal-body">
+                        
+                    <div className="container">
+                        <div className="col">
+                            {plan.map(day => {
+                                return(
+                                    <div className="row">
+                                        <div className="col">{day.Day}</div>
+                                        <div className="col" id={day.Day}>{day.Meals.map(meal => {
+                                            return(
+                                                <>
+                                                    <div className="row">
+                                                        <div className="col">{meal.Meal}</div>
+                                                        <div className="col" onClick={handleAdd} id={meal.Meal}>Add</div>
+                                                    </div>
+                                                </>
+                                            )
+                                        })}</div>
+                                    </div>
+                                    )
+                            })}
+                        </div>
+                    </div>
+                    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
         </div>
+
+            </div>
+  
+        </div>
+
+        
+        
+        
         </>
     )
 }
