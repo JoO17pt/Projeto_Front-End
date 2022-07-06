@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useRef, useContext} from "react";
 import DataContextSearch from "../data/dataContext-search";
 import DataContextPlan from "../data/dataContext-plan";
+import { searchBar_cuisines, searchBar_type, searchBar_sort, searchBar_diets, searchBar_intolerances } from "../data/search_bar";
+import "../components/search.css";
 
 const Search = props => {
 
@@ -9,6 +11,8 @@ const Search = props => {
     const [cuisine, setCuisine] = useState('');
     const [mealType, setMealType] = useState('');
     const [sort, setSort] = useState('');
+    const [diet, setDiet] = useState('');
+    const [intolerance, setIntolerance] = useState('');
     const [click, setClick] = useState(0);
     const [searchResults, setSearchResults] = useState('');
     const [totalResults, settotalResults] = useState();
@@ -21,21 +25,46 @@ const Search = props => {
     const {recips, setRecips} = useContext(DataContextSearch);
     const [plan, setPlan] = useContext(DataContextPlan);
     const [modal, setModal] = useState();
+    const [sortDirection, setSortDirection] = useState();
 
     const [planLocal, setPlanLocal] = useState();
 
-    // let planLocal = {};
+    const handleChange_SortDir = (e) => {
+        setSortDirection(e.target.value);
+    }
 
     const handleChange_cuisine = (e) => {
-        setCuisine(e.target.value);
+
+        if (!cuisine.includes(e.target.parentElement.lastChild.innerText)) {
+            setCuisine (cuisine + ',' + e.target.parentElement.lastChild.innerText);
+        } else {
+            let cuisineTemp = ''; 
+            cuisineTemp = cuisine.replace(','+e.target.parentElement.lastChild.innerText,'');
+            setCuisine (cuisineTemp);
+        }
+    }
+    
+    const handleChange_intolerance = (e) => {
+
+        if (!intolerance.includes(e.target.parentElement.lastChild.innerText)) {
+            setIntolerance (intolerance + ',' + e.target.parentElement.lastChild.innerText);
+        } else {
+            let intoleranceTemp = ''; 
+            intoleranceTemp = intolerance.replace(','+e.target.parentElement.lastChild.innerText,'');
+            setIntolerance (intoleranceTemp);
+        }
     }
     
     const handleChange_type = (e) => {
-        setMealType(e.target.value);
+        setMealType(e.target.parentElement.lastChild.innerText);
     }
     
     const handleChange_sort = (e) => {
-        setSort(e.target.value);
+        setSort(e.target.parentElement.lastChild.innerText);
+    }
+    
+    const handleChange_diet = (e) => {
+        setDiet(e.target.parentElement.lastChild.innerText);
     }
     
     const handleSearch = (e) => {
@@ -52,22 +81,30 @@ const Search = props => {
     
     const handleAdd = (e) => {
         
-        console.log(e.target.parentElement.firstChild.innerText); // Apanha a meal
-        console.log(e.target.parentElement.parentElement.parentElement.firstChild.innerText); // Apanha o dia
+        //console.log(e.target.parentElement.firstChild.innerText); // Apanha a meal
+        //console.log(e.target.parentElement.parentElement.parentElement.firstChild.innerText); // Apanha o dia
         console.log(recipID.current);
 
         let day = e.target.parentElement.parentElement.parentElement.firstChild.innerText;
         let meal = e.target.parentElement.firstChild.innerText;
-        // for( let i = 0 ; i < plan.length ; i++) {
-        //     if ( plan[i].Day === day ) {
-        //         for ( let t=0 ; t < plan[i].Meals ; t++) {
-        //             if ( plan[i].Meals[t].Meal === meal) setPlan(plan[i].Meals[t].Recip=recipID.current)
-        //         }
-        //     }
-        // };
+        console.log(day);
+        console.log(meal);
+        console.log(planLocal[0].Meals);
+
+      
+        for( let i = 0 ; i < planLocal.length ; i++) {
+            if ( planLocal[i].Day === day ) {
+                for ( let t=0 ; t < planLocal[i].Meals.length ; t++) {
+                    if ( planLocal[i].Meals[t].Meal === meal) planLocal[i].Meals[t].Recip=recips.results.filter(recip => recip.id==recipID.current)[0];
+                }
+            }
+        };
+
+        console.log(recips.results.filter(recip => recip.id==recipID.current)[0]);
+
         // planLocal[0].Meals[0].Recip = recipID.current;
         // console.log(planLocal[0].Meals[0].Recip);
-        planLocal[0].Meals[0].Recip = recipID.current;
+        // planLocal[0].Meals[0].Recip = recipID.current;
         setPlan(planLocal);
         console.log(planLocal);
     }
@@ -90,7 +127,7 @@ const Search = props => {
 // ============================================================================================================================================
 
     const acederAPI = () => {
-        fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=76b1835049c04ff1ab1c10a5507294b8&cuisine=${cuisine}&type=${mealType}&sort=${sort}&number=10&offset=${offset.current}&addRecipeInformation=true`)
+        fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=76b1835049c04ff1ab1c10a5507294b8&cuisine=${cuisine}&type=${mealType}&sort=${sort}&number=10&offset=${offset.current}&diet=${diet}&intolerances=${intolerance}&sortDirection=${sortDirection}&addRecipeInformation=true`)
             .then(res => res.json())
             .then(
                 (data) => {
@@ -140,109 +177,143 @@ const Search = props => {
         )
     }
 
-    // const renderizarModal = (plan) => {
-    //     console.log(plan);
-    //     setModal(
-    //         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    //             <div class="modal-dialog modal-dialog-centered">
-    //                 <div class="modal-content">
-    //                     <div class="modal-header">
-    //                         <h5 class="modal-title" id="exampleModalLabel">Meal Plan</h5>
-    //                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    //                      </div>
-    //                 <div class="modal-body">
-                        
-    //                 <div className="container">
-    //                     <div className="col">
-    //                         {plan.map(day => {
-    //                             return(
-    //                                 <div className="row">
-    //                                     <div className="col">{day.Day}</div>
-    //                                     <div className="col" id={day.Day}>{day.Meals.map(meal => {
-    //                                         return(
-    //                                             <>
-    //                                                 <div className="row">
-    //                                                     <div className="col">{meal.Meal}</div>
-    //                                                     <div className="col" onClick={handleAdd} id={meal.Meal}>Add</div>
-    //                                                 </div>
-    //                                             </>
-    //                                         )
-    //                                     })}</div>
-    //                                 </div>
-    //                                 )
-    //                         })}
-    //                     </div>
-    //                 </div>
-                    
-    //                 </div>
-    //                 <div class="modal-footer">
-    //                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-    //                     <button type="button" class="btn btn-primary">Save changes</button>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     </div>
-    //     )
-    // }
-
 // =============================================================================================================================================
     return(
         <>
         <div className="container">
-            <p>
-                <label for="cuisine">Cuisine:</label>
-                <select className="form-select" name="cuisine" onChange={handleChange_cuisine}>
 
-                    <option value="0">-- Select a Cuisine --</option>
-                    
-                    <optgroup label="Europe">
-                        <option value="british">British</option>
-                        <option value="french">French</option>
-                        <option value="german">German</option>
-                        <option value="greek">Greek</option>
-                        <option value="italian">Italian</option>
-                    </optgroup>
-                    
-                    <optgroup label="Asia">
-                        <option value="Chinese">Chinese</option>
-                        <option value="Indian">Indian</option>
-                        <option value="Korean">Korean</option>
-                    </optgroup>
-
-                </select>
-            </p>
-
-            <p>
-                <label for="type">Type:</label>
-                <select className="form-select" name="type" onChange={handleChange_type}>
-
-                    <option value="0">-- Select a type of meal --</option>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        Cuisine
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                                <div className="recips_container container">
+                                    {searchBar_cuisines.map(cuisine => {
+                                        return(
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id={"flexSwitchCheckDefault"+"_"+cuisine} onChange={handleChange_cuisine}/>
+                                                <label class="form-check-label" for={"flexSwitchCheckDefault"+"_"+cuisine}>{cuisine}</label>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                        </div>
+                    </div>
+                </div>
                 
-                    <option value="main course">Main course</option>
-                    <option value="dessert">Dessert</option>
-                    <option value="breakfast">Breakfast</option>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                        Type
+                        </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <div className="recips_container container">
+                                {searchBar_type.map(type => {
+                                    return (
+                                        
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id={"flexRadioDefault1"+"_"+type} onChange={handleChange_type}/>
+                                            <label class="form-check-label" for={"flexRadioDefault1"+"_"+type}>{type}</label>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                </select>
-            
-            </p>
-            
-            <p>
-                <label for="sort">Sort:</label>
-                <select className="form-select" name="sort" onChange={handleChange_sort}>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                        Sort
+                        </button>
+                    </h2>
+                    <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <div className="recips_container container">
+                                {searchBar_sort.map(sort => {
+                                    return (
+                                        
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id={"flexRadioDefault1"+"_"+sort} onChange={handleChange_sort}/>
+                                            <label class="form-check-label" for={"flexRadioDefault1"+"_"+sort}>{sort}</label>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                            <div className="row g-0">
+                                <input type="radio" class="btn-check" id="btn-check_1" autocomplete="off" name="sortDir" value ="asc" onClick={handleChange_SortDir}/>
+                                <label class="btn btn-primary" for="btn-check_1">Ascending</label>
+                                
+                                <input type="radio" class="btn-check" id="btn-check_2" autocomplete="off" name="sortDir" value ="desc" onClick={handleChange_SortDir}/>
+                                <label class="btn btn-primary" for="btn-check_2">Descending</label>
+                            </div>
+                            
 
-                    <option value="0">-- Select the sort method --</option>
+                        </div>
+                    </div>
+                </div>
                 
-                    <option value="popularity">Popularity</option>
-                    <option value="healthiness">Healthiness</option>
-                    <option value="price">Price</option>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingFour">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                        Diet
+                        </button>
+                    </h2>
+                    <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <div className="recips_container container">
+                                {searchBar_diets.map(diet => {
+                                    return (
+                                        
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id={"flexRadioDefault1"+"_"+diet} onChange={handleChange_diet}/>
+                                            <label class="form-check-label" for={"flexRadioDefault1"+"_"+diet}>{diet}</label>
+                                        </div>
+                                    )
+                                })}
+                            </div>
 
-                </select>
-            
-            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingFive">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                        Intolerances
+                        </button>
+                    </h2>
+                    <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <div className="recips_container container">
+                                {searchBar_intolerances.map(intolerance => {
+                                    return (
+                                        
+                                        <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id={"flexSwitchCheckDefault"+"_"+intolerance} onChange={handleChange_intolerance}/>
+                                                <label class="form-check-label" for={"flexSwitchCheckDefault"+"_"+intolerance}>{intolerance}</label>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
 
             <p>Selected cuisine: {cuisine}</p>
             <p>Selected type of meal: {mealType}</p>
             <p>Selected sort method: {sort}</p>
+            <p>Selected intolerance: {intolerance}</p>
    
             <p>
             <button className="btn btn-primary" onClick={handleSearch}>Search</button>

@@ -11,28 +11,32 @@ const Report = props => {
 
     console.log(plan)
 
+    const renderizarTeste = (recip) => {
+        if(Object.keys(recip).length !== 0) 
+            return(<div className="col">{recip.title}</div>)
+    }
+
     const rendeizarPagina = (plan) => {
         setResults(
-            // <div className="col">
-            //                     {plan.map(day => {
-            //                         return(
-            //                             <div className="row">
-            //                                 <div className="col">{day.Day}</div>
-            //                                 <div className="col">{day.Meals.map(meal => {
-            //                                     return(
-            //                                         <>
-            //                                             <div className="row">
-            //                                                 <div className="col">{meal.Meal}</div>
-            //                                                 {/* <div className="col">{meal.Recip}</div> */}
-            //                                                 {console.log(meal.Recip)}
-            //                                             </div>
-            //                                         </>
-            //                                     )
-            //                                 })}</div>
-            //                             </div>
-            //                         )
-            //                     })}
-            //                 </div>
+            <div className="col">
+                                {plan.map(day => {
+                                    return(
+                                        <div className="row">
+                                            <div className="col">{day.Day}</div>
+                                            <div className="col">{day.Meals.map(meal => {
+                                                return(
+                                                    <>
+                                                        <div className="row">
+                                                            <div className="col">{meal.Meal}</div>
+                                                            <div className="col">{renderizarTeste(meal.Recip)}</div>
+                                                        </div>
+                                                    </>
+                                                )
+                                            })}</div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
             )
     }
 
