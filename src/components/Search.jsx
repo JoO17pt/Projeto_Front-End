@@ -3,6 +3,8 @@ import DataContextSearch from "../data/dataContext-search";
 import DataContextPlan from "../data/dataContext-plan";
 import { searchBar_cuisines, searchBar_type, searchBar_sort, searchBar_diets, searchBar_intolerances } from "../data/search_bar";
 import "../components/search.css";
+import "../fonts/fontawesome-free-6.0.0-web/css/all.css"
+import parse from 'html-react-parser'
 
 const Search = props => {
 
@@ -25,7 +27,7 @@ const Search = props => {
     const {recips, setRecips} = useContext(DataContextSearch);
     const [plan, setPlan] = useContext(DataContextPlan);
     const [modal, setModal] = useState();
-    const [sortDirection, setSortDirection] = useState();
+    const [sortDirection, setSortDirection] = useState('');
 
     const [planLocal, setPlanLocal] = useState();
 
@@ -33,7 +35,46 @@ const Search = props => {
         setSortDirection(e.target.value);
     }
 
+    // Função para fazer find and replace de strings
+
+    // const convertString = (string) => {
+    //     let newStringTeste = string.includes('<');
+
+    //     while (newStringTeste) {
+    //         string = string.replace('<', '&lt;');
+    //         newStringTeste = string.includes('<');
+    //     } 
+
+    //     let newStringTeste2 = string.includes('>');
+
+    //     while (newStringTeste2) {
+    //         string = string.replace('>', '&gt;');
+    //         newStringTeste2 = string.includes('>');
+    //     }
+
+    //     let newStringTeste3 = string.includes(`"`);
+
+    //     while (newStringTeste3) {
+    //         string = string.replace(`"`, '');
+    //         newStringTeste3 = string.includes(`"`);
+    //     }
+
+    //     return (string);
+  
+    // }
+
     const handleChange_cuisine = (e) => {
+
+        let stringTeste = "João Pedro Araújo João";
+        let newStringTeste = stringTeste.includes('João');
+
+        while (newStringTeste) {
+            stringTeste = stringTeste.replace('João', 'Rui');
+            newStringTeste = stringTeste.includes('João');
+        }
+
+        console.log(stringTeste)
+        console.log(newStringTeste)
 
         if (!cuisine.includes(e.target.parentElement.lastChild.innerText)) {
             setCuisine (cuisine + ',' + e.target.parentElement.lastChild.innerText);
@@ -127,7 +168,7 @@ const Search = props => {
 // ============================================================================================================================================
 
     const acederAPI = () => {
-        fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=76b1835049c04ff1ab1c10a5507294b8&cuisine=${cuisine}&type=${mealType}&sort=${sort}&number=10&offset=${offset.current}&diet=${diet}&intolerances=${intolerance}&sortDirection=${sortDirection}&addRecipeInformation=true`)
+        fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=76b1835049c04ff1ab1c10a5507294b8&cuisine=${cuisine}&type=${mealType}&sort=${sort}&number=10&offset=${offset.current}&diet=${diet}&intolerances=${intolerance}&sortDirection=${sortDirection}&addRecipeInformation=true&fillIngredients=true&addRecipeNutrition=true`)
             .then(res => res.json())
             .then(
                 (data) => {
@@ -164,7 +205,17 @@ const Search = props => {
                                 <div className="col-md-8">
                                     <div className="card-body">
                                         <h5 className="card-title">{recip.title}</h5>
-                                        <p className="card-text">{recip.summary}</p>
+                                        <p className="card-text" >
+                                            {parse(recip.summary)}
+                                        </p>
+                                        <div className="container">
+                                            <div className="row">
+                                                <div className="col"> <img src="/img/relogio.png" className="imgIcons"/> {recip.readyInMinutes} minutes</div>
+                                                <div className="col"><img src="/img/cooking.png" className="imgIcons"/> {recip.analyzedInstructions[0].steps.length} steps</div>
+                                                <div className="col"><img src="/img/carrot.png" className="imgIcons"/> {recip.extendedIngredients.length} ingridients</div>
+                                                <div className="col"><img src="/img/muscle.png" className="imgIcons"/> {recip.healthScore}%</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={handleModal}>
@@ -308,17 +359,17 @@ const Search = props => {
                     </div>
                 </div>
             </div>
-        
+            
+            <br/>
 
-            <p>Selected cuisine: {cuisine}</p>
+            {/* <p>Selected cuisine: {cuisine}</p>
             <p>Selected type of meal: {mealType}</p>
             <p>Selected sort method: {sort}</p>
-            <p>Selected intolerance: {intolerance}</p>
+            <p>Selected intolerance: {intolerance}</p> */}
    
             <p>
-            <button className="btn btn-primary" onClick={handleSearch}>Search</button>
+            <button className="btn btn-primary" onClick={handleSearch}>Check the results</button>
             </p>
-            <p>Fui clicado {click} vezes!</p>
 
         </div>
 
@@ -328,15 +379,23 @@ const Search = props => {
             {RecipsList('','','')}
         </div> */}
         <div className="container">
-            <div>
-                <p>Total results: {totalResults}</p>
-                <p>Results presentd: {numberResults}</p>
-                <p>Results Offset: {offsetResults}</p>
-                <button className="btn btn-primary" onClick={handleMoreResults}>Get more results</button>
+            <div className="row pagination">
+                <p>
+                    Presenting {numberResults} out of {totalResults} results (Offset: {offsetResults})     
+                </p>
             </div>
-            <br/>
+
             <div>
                 {searchResults}
+            </div>
+
+            <div className="row pagination">
+                <p>
+                    Presenting {numberResults} out of {totalResults} results (Offset: {offsetResults})     
+                </p>
+                <p>
+                    <button className="btn btn-primary" onClick={handleMoreResults} disabled={false}>Get more results</button>
+                </p>
             </div>
 
             <div>

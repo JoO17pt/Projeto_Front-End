@@ -7,3 +7,16 @@
 .recips_container > div {
     width: 210px;
 }
+
+a {
+    text-decoration: none;
+    color:black
+}
+
+.imgIcons {
+    max-width: 30px;
+}
+
+.pagination {
+    text-align: center;
+}
