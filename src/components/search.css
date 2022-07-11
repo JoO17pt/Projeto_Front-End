@@ -20,3 +20,7 @@ a {
 .pagination {
     text-align: center;
 }
+
+.addRemoveIcons {
+    max-width: 20px;
+}

@@ -1,0 +1,12 @@
+.teste123 {
+    border: solid 1px rgb(214, 211, 211);
+    padding: 10px;
+    border-radius:0.5em;
+}
+
+img {
+    /* width: 125px; */
+    /* position: absolute;
+    right: 0px; */
+    text-align: right;
+}
