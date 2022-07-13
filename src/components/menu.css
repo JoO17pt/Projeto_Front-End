@@ -3,3 +3,7 @@
     top: 0px;
     z-index: 99;
 } */
+
+#menuIcon {
+    max-width: 30px;
+}

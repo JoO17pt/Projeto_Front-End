@@ -7,7 +7,10 @@ const Menu = props => {
         // <div className="container">
             <nav className="navbar navbar-expand-lg bg-light fixed-top">
                 <div className="container-fluid">
-                    <a className="navbar-brand">MealPlanner</a>
+                    <a className="navbar-brand">
+                        MealPlanner
+                        <img id="menuIcon" src="/img/asparagus.png"></img>
+                    </a>
                         <div className="collapse navbar-collapse" id="navbarNav">
                             <ul className="navbar-nav">
                                 <li className="nav-item">

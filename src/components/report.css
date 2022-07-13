@@ -10,3 +10,15 @@ img {
     right: 0px; */
     text-align: right;
 }
+
+.resultsContainer {
+    height: 90vh;
+}
+.resultsContainer2 {
+    height: 90vh;
+    overflow:auto;
+}
+
+.removeBorder {
+    border: solid 0px white;
+}

@@ -625,7 +625,7 @@ const Search = props => {
         </div> */}
         <div className="container">
           <p className="invisible" id="resultsIntro">
-              Take a look at the results we found for you! Beyond the description and photo, you can also check how long it will take to prepare each meal, the number of required ingridents, the number of portions, and the health rate (the higher, the healthier!). Did you find what you were looking for? Tap the "Add to my Meal Plan" button and associate the meal to a day and meal of your Meal Plan. Through the modal window you will also able to remove previous meals added to the plan.
+              Take a look at the results we found for you! Beyond the description and photo, you can also check how long it will take to prepare each meal, the number of required ingridents, the number of portions, and the health rate (the higher, the healthier!). Did you find what you were looking for? Tap the "Add to my Meal Plan" button and associate the meal to a day and meal of your Meal Plan. Through the modal window you will also able to remove previous meals added to the plan. Satisfied with your weekly meal plan? Move on to the "See Report" window to collect the data that will help you to manage your meal routine.
             </p>
           <div className="row pagination invisible">
             
