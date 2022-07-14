@@ -36,6 +36,29 @@ const Search = props => {
         setSortDirection(e.target.value);
     }
 
+    const renderizarTeste = (recip) => {
+      if (Object.keys(recip).length !== 0) {
+        return true;
+      }
+      return false;
+    };
+
+    const addOrRemove = (recip) => {
+      if (renderizarTeste(recip)) {
+        return(
+        <img
+          src="/img/minus.png"
+          className="addRemoveIcons pointer"
+          id="removeButton"
+        ></img>)
+      } else {
+        return (<img
+          src="/img/add.png"
+          className="addRemoveIcons pointer"
+          id="addButton"
+        ></img>)
+      }
+    }
     // Função para fazer find and replace de strings
 
     // const convertString = (string) => {
@@ -127,19 +150,34 @@ const Search = props => {
         acederAPI();
         setClick(click+1);
     }
-    
-    const handleAdd = (e) => {
+
+    const handleChangePlan = (e) => {
+      console.log(e.target.parentElement.lastChild.id)
+      let day = e.target.parentElement.parentElement.parentElement.parentElement.firstChild.innerText;
+      let meal = e.target.parentElement.parentElement.firstChild.innerText;
+      console.log(day);
+      console.log(meal);
+      if(e.target.parentElement.lastChild.id === "addButton") {
+        handleAdd(day, meal);
+        e.target.setAttribute('src','/img/minus.png');
+      } else {
+        handleRemove(day, meal);
+        e.target.setAttribute('src','/img/add.png');
+      }
+    }
+
+    const handleAdd = (day, meal) => {
         
         //console.log(e.target.parentElement.firstChild.innerText); // Apanha a meal
         //console.log(e.target.parentElement.parentElement.parentElement.firstChild.innerText); // Apanha o dia
-        console.log(recipID.current);
+        // console.log(recipID.current);
 
-        let day = e.target.parentElement.parentElement.parentElement.parentElement.firstChild.innerText;
-        let meal = e.target.parentElement.parentElement.firstChild.innerText;
-        console.log(day);
-        console.log(meal);
-        console.log(planLocal[0].Meals);
-        e.target.setAttribute('src','/img/check.png');
+        // let day = e.target.parentElement.parentElement.parentElement.parentElement.firstChild.innerText;
+        // let meal = e.target.parentElement.parentElement.firstChild.innerText;
+        // console.log(day);
+        // console.log(meal);
+        // console.log(planLocal[0].Meals);
+        // e.target.setAttribute('src','/img/check.png');
       
         for( let i = 0 ; i < planLocal.length ; i++) {
             if ( planLocal[i].Day === day ) {
@@ -149,27 +187,27 @@ const Search = props => {
             }
         };
 
-        console.log(recips.results.filter(recip => recip.id==recipID.current)[0]);
+        // console.log(recips.results.filter(recip => recip.id==recipID.current)[0]);
 
         // planLocal[0].Meals[0].Recip = recipID.current;
         // console.log(planLocal[0].Meals[0].Recip);
         // planLocal[0].Meals[0].Recip = recipID.current;
         setPlan(planLocal);
-        console.log(planLocal);
+        // console.log(planLocal);
     }
     
-    const handleRemove = (e) => {
+    const handleRemove = (day, meal) => {
         
         //console.log(e.target.parentElement.firstChild.innerText); // Apanha a meal
         //console.log(e.target.parentElement.parentElement.parentElement.firstChild.innerText); // Apanha o dia
-        console.log(recipID.current);
+        // console.log(recipID.current);
 
-        let day = e.target.parentElement.parentElement.parentElement.parentElement.firstChild.innerText;
-        let meal = e.target.parentElement.parentElement.firstChild.innerText;
-        console.log(day);
-        console.log(meal);
-        console.log(planLocal[0].Meals);
-        e.target.setAttribute('src','/img/check.png');
+        // let day = e.target.parentElement.parentElement.parentElement.parentElement.firstChild.innerText;
+        // let meal = e.target.parentElement.parentElement.firstChild.innerText;
+        // console.log(day);
+        // console.log(meal);
+        // console.log(planLocal[0].Meals);
+        // e.target.setAttribute('src','/img/check.png');
 
       
         for( let i = 0 ; i < planLocal.length ; i++) {
@@ -180,13 +218,13 @@ const Search = props => {
             }
         };
 
-        console.log(recips.results.filter(recip => recip.id==recipID.current)[0]);
+        // console.log(recips.results.filter(recip => recip.id==recipID.current)[0]);
 
         // planLocal[0].Meals[0].Recip = recipID.current;
         // console.log(planLocal[0].Meals[0].Recip);
         // planLocal[0].Meals[0].Recip = recipID.current;
         setPlan(planLocal);
-        console.log(planLocal);
+        // console.log(planLocal);
     }
 
     const handleModal = (e) => {
@@ -277,14 +315,14 @@ const Search = props => {
                                 />{" "}
                                 {recip.readyInMinutes} minutes
                               </div>
-                              <div className="col">
+                              {/* <div className="col">
                                 <img
                                   src="/img/cooking.png"
                                   className="imgIcons"
                                 />{" "}
                                 {recip.analyzedInstructions[0].steps.length}{" "}
                                 steps
-                              </div>
+                              </div> */}
                               <div className="col">
                                 <img
                                   src="/img/carrot.png"
@@ -688,29 +726,45 @@ const Search = props => {
                                       <div className="row">
                                         <div className="col-8">{meal.Meal}</div>
                                         <div
-                                          className="col-2"
-                                          onClick={handleAdd}
+                                          className="col-4"
+                                          // onClick={handleAdd}
+                                          onClick={handleChangePlan}
                                           id={meal.Meal}
                                         >
-                                          <img
-                                            src="/img/add.png"
-                                            className="addRemoveIcons"
-                                            id="addButton"
-                                          ></img>
+                                          {addOrRemove(meal.Recip)}
+                                          {/* {if(renderizarTeste(meal.Recip)) {
+                                            return(
+                                              <img
+                                                src="/img/minus.png"
+                                                className="addRemoveIcons pointer"
+                                                id="removeButton"
+                                              ></img>
+                                            )} else {
+                                              return(
+                                                <img
+                                                  src="/img/add.png"
+                                                  className="addRemoveIcons pointer"
+                                                  id="addButton"
+                                                ></img>
+                                              )
+                                            }
+                                          } */}
+                                          
                                           {/* Add */}
+
                                         </div>
-                                        <div
+                                        {/* <div
                                           className="col-2"
                                           onClick={handleRemove}
                                           id={meal.Meal}
                                         >
                                           <img
                                             src="/img/minus.png"
-                                            className="addRemoveIcons"
+                                            className="addRemoveIcons pointer"
                                             id="removeButton"
                                           ></img>
-                                          {/* Remove */}
-                                        </div>
+                                          Remove
+                                        </div> */}
                                       </div>
                                     </>
                                   );

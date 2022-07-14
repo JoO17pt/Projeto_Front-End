@@ -12,10 +12,10 @@ img {
 }
 
 .resultsContainer {
-    height: 90vh;
+    height: 80vh;
 }
 .resultsContainer2 {
-    height: 90vh;
+    height: 80vh;
     overflow:auto;
 }
 

@@ -24,3 +24,7 @@ a {
 .addRemoveIcons {
     max-width: 20px;
 }
+
+.pointer {
+    cursor: pointer;
+}

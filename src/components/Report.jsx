@@ -87,7 +87,7 @@ const Report = (props) => {
       renderizarPagina5(plan);
     } else {
       setResults(
-        <p>Your Meal Plan is currently empty. Start by the section "Manage Plan" to search for recips and build your Meal Plan for the week. Come back here later to check the results!</p>
+        <p>Your Meal Plan is currently empty. Start with the section "Manage Plan" to search for recipes and build your Meal Plan for the week. Come back later to check the results!</p>
       )
       // document.querySelector("#initialMessage").classList.remove("invisible");
       // document.querySelector(".resultsContainer").classList.add("invisible");
