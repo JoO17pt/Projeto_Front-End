@@ -8,13 +8,4 @@ const searchBar_type = ['Main course','Side dish','Dessert','Appetizer','Salad',
 
 const searchBar_sort = ['Meta-score','Popularity','Healthiness','Price','Time','Random','Max-used-ingredients','Min-missing-ingredients','Alcohol','Caffeine','Copper','Energy','Calories','Calcium','Carbohydrates','Carbs','Choline','Cholesterol','Total-fat','Fluoride','Trans-fat','Saturated-fat','Mono-unsaturated-fat','Poly-unsaturated-fat','Fiber','Folate','Folic-acid','Iodine','Iron','Magnesium','Manganese','Vitamin-b3','Niacin','Vitamin-b5','Pantothenic-acid','Phosphorus','Potassium','Protein','Vitamin-b2','Riboflavin','Selenium','Sodium','Vitamin-b1','Thiamin','Vitamin-a','Vitamin-b6','Vitamin-b12','Vitamin-c','Vitamin-d','Vitamin-e','Vitamin-k','Sugar','Zinc'];
 
-// sortDirection
-// maxReadyTime
-// minCarbs
-// maxCarbs
-// minProtein
-// maxProtein
-// minCalories
-// maxCalories
-
 export {searchBar_cuisines, searchBar_type, searchBar_sort, searchBar_diets, searchBar_intolerances}

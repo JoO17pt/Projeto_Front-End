@@ -1,10 +1,10 @@
 import React from "react";
 import {Routes, Route} from 'react-router-dom'
-import "../components/content.css"
+import "../components/styles/content.css"
 
-import Search from "./Search";
-import Home from "./Home";
-import Report from "./Report";
+import Search from "./views/Search";
+import Home from "./views/Home";
+import Report from "./views/Report";
 
 const Content = props => {
     return (
