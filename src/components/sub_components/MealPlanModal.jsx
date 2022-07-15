@@ -30,14 +30,14 @@ const MealPlanModal = props => {
                     <div className="col">
                       {props.plan.map((day) => {
                         return (
-                          <div className="row">
-                            <div className="col-6">{day.Day}</div>
-                            <div className="col-6" id={day.Day}>
+                          <div className="row modalRow">
+                            <div className="col-4 alignVertical">{day.Day}</div>
+                            <div className="col-8" id={day.Day}>
                               {day.Meals.map((meal) => {
                                 return (
                                   <>
                                     <div className="row">
-                                      <div className="col-8">{meal.Meal}</div>
+                                      <div className="col-8 alignMeal">{meal.Meal}</div>
                                       <div
                                         className="col-4"
                                         onClick={props.handleChangePlan}

@@ -46,7 +46,7 @@ const SearchResults = (props) => {
                 </div>
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  className="btn btn-primary button"
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
                   onClick={props.handleModal}

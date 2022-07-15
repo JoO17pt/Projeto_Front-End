@@ -31,7 +31,7 @@ const Search = (props) => {
   // 1.3 Manage fetch and fetch results
 
   const [error, setError] = useState(null);
-  const { recips, setRecips } = useContext(DataContextSearch);
+  const {recips, setRecips} = useContext(DataContextSearch);
   const [plan, setPlan] = useContext(DataContextPlan);
   const [planLocal, setPlanLocal] = useState();
 
@@ -129,10 +129,14 @@ const Search = (props) => {
 
     if (e.target.parentElement.lastChild.id === "addButton") {
       handleAdd(day, meal);
-      e.target.setAttribute("src", "/img/minus.png");
+      e.target.setAttribute("src", "/img/check.png");
+      setTimeout(()=>e.target.setAttribute("src", "/img/minus.png"),1000)
+      e.target.parentElement.lastChild.setAttribute("id", "removeButton");
     } else {
       handleRemove(day, meal);
-      e.target.setAttribute("src", "/img/add.png");
+      e.target.setAttribute("src", "/img/check.png");
+      setTimeout(()=>e.target.setAttribute("src", "/img/add.png"),1000)
+      e.target.parentElement.lastChild.setAttribute("id", "addButton");
     }
   };
 
@@ -227,7 +231,7 @@ const Search = (props) => {
           that suits you best. Once you feel good to go, press the "Check the
           results" button to see the meal options we have for you. Despite the
           number of results we find for you, in order to keep the navigation
-          clear it will be shown to you a maximum of 10 results at once. If you
+          clear it will be shown a maximum of 10 results at once. If you
           see the button "Get more results" at the bottom of the page, feel free
           to press it and get another set of meal option.
         </p>
@@ -245,7 +249,7 @@ const Search = (props) => {
         
         <p>
           <button
-            className="btn btn-primary"
+            className="btn btn-primary button"
             onClick={handleSearch}
             id="upPagination"
           >
@@ -266,9 +270,9 @@ const Search = (props) => {
           the health rate (the higher, the healthier!). Did you find what you
           were looking for? Tap the "Add to my Meal Plan" button and associate
           the meal to a day and meal of your Meal Plan. Through the modal window
-          you will also able to remove previous meals added to the plan.
+          you will also be able to remove meals previously added to the plan.
           Satisfied with your weekly meal plan? Move on to the "See Report"
-          window to collect the data that will help you to manage your meal
+          section to collect the data that will help you to manage your meal
           routine.
         </p>
 
@@ -291,7 +295,7 @@ const Search = (props) => {
             <a href="#upPagination">
               <button
                 id="moreResultsButton"
-                className="btn btn-primary"
+                className="btn btn-primary button"
                 onClick={handleMoreResults}
               >
                 Get more results

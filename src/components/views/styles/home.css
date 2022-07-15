@@ -1,0 +1,27 @@
+.homeLi {
+    border: 0px solid black;
+    text-align: center;
+}
+
+#home{
+    margin-top: 0vh;
+    display: flex;
+    height: 90vh;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10vh;
+}
+
+#buttonHome {
+    height: 125px;
+    border-radius: 50%;
+}
+
+.semiBold {
+    font-weight: 600;
+}
+
+#divButton {
+    display: flex;
+    justify-content: center;
+}

@@ -15,7 +15,7 @@ const SearchParameters = props => {
           <div className="accordion-item">
             <h2 className="accordion-header" id="flush-headingOne">
               <button
-                className="accordion-button collapsed"
+                className="accordion-button collapsed bold"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#flush-collapseOne"
@@ -60,7 +60,7 @@ const SearchParameters = props => {
           <div className="accordion-item">
             <h2 className="accordion-header" id="flush-headingTwo">
               <button
-                className="accordion-button collapsed"
+                className="accordion-button collapsed bold"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#flush-collapseTwo"
@@ -105,7 +105,7 @@ const SearchParameters = props => {
           <div className="accordion-item">
             <h2 className="accordion-header" id="flush-headingThree">
               <button
-                className="accordion-button collapsed"
+                className="accordion-button collapsed bold"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#flush-collapseThree"
@@ -153,7 +153,7 @@ const SearchParameters = props => {
                     value="asc"
                     onClick={props.sortDir}
                   />
-                  <label className="btn btn-primary" for="btn-check_1">
+                  <label className="btn btn-primary buttonAscDesc" for="btn-check_1">
                     Ascending
                   </label>
 
@@ -166,7 +166,7 @@ const SearchParameters = props => {
                     value="desc"
                     onClick={props.sortDir}
                   />
-                  <label className="btn btn-primary" for="btn-check_2">
+                  <label className="btn btn-primary buttonAscDesc" for="btn-check_2">
                     Descending
                   </label>
                 </div>
@@ -177,7 +177,7 @@ const SearchParameters = props => {
           <div className="accordion-item">
             <h2 className="accordion-header" id="flush-headingFour">
               <button
-                className="accordion-button collapsed"
+                className="accordion-button collapsed bold"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#flush-collapseFour"
@@ -222,7 +222,7 @@ const SearchParameters = props => {
           <div className="accordion-item">
             <h2 className="accordion-header" id="flush-headingFive">
               <button
-                className="accordion-button collapsed"
+                className="accordion-button collapsed bold"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#flush-collapseFive"

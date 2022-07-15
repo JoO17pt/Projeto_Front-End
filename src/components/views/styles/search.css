@@ -5,7 +5,7 @@
 }
 
 .recips_container > div {
-    width: 210px;
+    width: 190px;
 }
 
 a {
@@ -31,4 +31,47 @@ a {
 
 .invisible {
     display: none;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.bold :hover {
+    text-decoration: underline;
+}
+
+.button {
+    background-color: rgb(135, 222, 135);
+    border: 1px 
+}
+
+.button:hover {
+    background-color: rgb(72, 157, 72);
+}
+
+.buttonAscDesc {
+    background-color: rgb(135, 222, 135);
+    border: 1px 
+}
+
+.buttonAscDesc:hover {
+    background-color: rgb(72, 157, 72);
+}
+
+.alignVertical {
+    line-height: 4.5em;
+    text-align: center;
+}
+
+.alignMeal {
+    text-align: center;
+}
+
+.modalRow {
+    border-bottom: 1px solid rgb(216, 216, 216);
+}
+
+.modalRow:last-child {
+    border-bottom: 0px solid rgb(216, 216, 216);
 }
